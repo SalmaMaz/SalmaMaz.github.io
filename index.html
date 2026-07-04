@@ -49,7 +49,7 @@
     display: inline-flex; align-items: center; gap: 9px;
     padding: 13px 30px; border-radius: 999px;
     font-size: 1rem; font-weight: 600; cursor: pointer;
-    border: 1.5px solid var(--maroon);
+    border: 1.5px solid var(--maroon); font-family: var(--font);
     transition: transform .18s ease, background .2s ease, color .2s ease, border-color .2s ease;
     white-space: nowrap;
   }
@@ -74,6 +74,7 @@
   .cv-btn {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--maroon);
+    background: transparent; cursor: pointer; font-family: var(--font);
     color: var(--maroon) !important; font-weight: 600; font-size: 0.9rem;
     transition: background .2s, color .2s;
   }
@@ -162,6 +163,27 @@
   .modal .m-skills span { font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); }
   @media (max-width: 600px){ .modal { padding: 36px 26px; } }
 
+  /* CV / PDF modal */
+  .pdf-overlay {
+    position: fixed; inset: 0; z-index: 110;
+    background: rgba(51,46,46,0.55); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center; padding: 3vh 3vw;
+  }
+  .pdf-overlay.open { display: flex; animation: fade .2s ease; }
+  .pdf-modal {
+    background: var(--cream); border: 1.5px solid var(--ink); border-radius: 18px;
+    width: min(900px, 96vw); height: 94vh; display: flex; flex-direction: column;
+    overflow: hidden; position: relative; animation: pop .22s ease;
+  }
+  .pdf-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 20px; border-bottom: 1.5px solid var(--line); }
+  .pdf-head .t { font-weight: 700; font-size: 1.05rem; }
+  .pdf-head .acts { display: flex; align-items: center; gap: 10px; }
+  .pdf-open { font-size: 0.85rem; font-weight: 600; color: var(--maroon); border: 1.5px solid var(--maroon); padding: 7px 14px; border-radius: 999px; transition: background .2s, color .2s; }
+  .pdf-open:hover { background: var(--maroon); color: var(--cream); }
+  .pdf-close { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--cream); color: var(--ink); font-size: 1rem; cursor: pointer; display: grid; place-items: center; transition: background .2s, color .2s, border-color .2s; }
+  .pdf-close:hover { background: var(--maroon); color: var(--cream); border-color: var(--maroon); }
+  .pdf-modal iframe { flex: 1; width: 100%; border: none; background: #525659; }
+
   /* Skills */
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5px; background: var(--line); border: 1.5px solid var(--line); border-radius: 20px; overflow: hidden; margin-top: 36px; }
   .skill-card { background: var(--cream); padding: 30px 28px; }
@@ -203,7 +225,7 @@
       <a href="#projects" data-i18n="nav_projects">Projects</a>
       <a href="#skills" data-i18n="nav_skills">Skills</a>
       <a href="#tools" data-i18n="nav_tools">Tools</a>
-      <a class="nav-pill cv-btn" href="cv.pdf" target="_blank" rel="noopener" data-i18n="cv">Download CV</a>
+      <button class="nav-pill cv-btn" id="cvBtnNav" data-i18n="cv">View CV</button>
       <div class="nav-pill lang" role="group" aria-label="Language">
         <span data-lang="en" class="on">EN</span><span data-lang="fr">FR</span>
       </div>
@@ -218,7 +240,7 @@
     <p class="intro reveal" data-i18n="hero_intro">I'm a builder at heart — I turn problems into practical solutions, often by building apps in my free time, grounded in rigorous user research.</p>
     <div class="actions reveal">
       <a class="pill solid" href="#projects" data-i18n="hero_view">View my projects</a>
-      <a class="pill outline" href="cv.pdf" target="_blank" rel="noopener" data-i18n="cv">Download CV</a>
+      <button class="pill outline" id="cvBtnHero" data-i18n="cv">View CV</button>
       <a class="pill outline" href="#contact" data-i18n="hero_contact">Get in touch</a>
     </div>
   </div>
@@ -251,6 +273,19 @@
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" id="modalBox" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="pdf-overlay" id="cvOverlay">
+  <div class="pdf-modal" role="dialog" aria-modal="true" aria-label="CV">
+    <div class="pdf-head">
+      <span class="t">Salma Mazid — CV</span>
+      <div class="acts">
+        <a class="pdf-open" href="cv.pdf" target="_blank" rel="noopener" data-i18n="cv_newtab">Open in new tab ↗</a>
+        <button class="pdf-close" aria-label="Close" onclick="closeCV()">✕</button>
+      </div>
+    </div>
+    <iframe id="cvFrame" title="Salma Mazid CV" src="about:blank"></iframe>
+  </div>
 </div>
 
 <section class="block" id="skills" style="padding-top:20px">
@@ -314,7 +349,8 @@
     nav_projects: { en:"Projects", fr:"Projets" },
     nav_skills: { en:"Skills", fr:"Compétences" },
     nav_tools: { en:"Tools", fr:"Outils" },
-    cv: { en:"Download CV", fr:"Télécharger le CV" },
+    cv: { en:"View CV", fr:"Voir le CV" },
+    cv_newtab: { en:"Open in new tab ↗", fr:"Ouvrir dans un onglet ↗" },
     eyebrow: { en:"Junior Product Manager & UX Researcher", fr:"Product Manager Junior & UX Researcher" },
     hero_intro: { en:"I'm a builder at heart — I turn problems into practical solutions, often by building apps in my free time, grounded in rigorous user research.", fr:"Je suis une bâtisseuse dans l'âme — je transforme les problèmes en solutions concrètes, souvent en créant des applications sur mon temps libre, en m'appuyant sur une recherche utilisateur rigoureuse." },
     hero_view: { en:"View my projects", fr:"Voir mes projets" },
@@ -468,7 +504,23 @@
   function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
   window.closeModal = closeModal;
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // CV modal
+  const cvOverlay = document.getElementById('cvOverlay');
+  const cvFrame = document.getElementById('cvFrame');
+  function openCV(){
+    if (cvFrame.getAttribute('src') !== 'cv.pdf') cvFrame.setAttribute('src','cv.pdf');
+    cvOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCV(){ cvOverlay.classList.remove('open'); document.body.style.overflow=''; }
+  window.openCV = openCV;
+  window.closeCV = closeCV;
+  document.getElementById('cvBtnNav').addEventListener('click', openCV);
+  document.getElementById('cvBtnHero').addEventListener('click', openCV);
+  cvOverlay.addEventListener('click', e => { if (e.target === cvOverlay) closeCV(); });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeCV(); } });
 
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
