@@ -187,7 +187,18 @@
   .pdf-open:hover { background: var(--maroon); color: var(--cream); }
   .pdf-close { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--cream); color: var(--ink); font-size: 1rem; cursor: pointer; display: grid; place-items: center; transition: background .2s, color .2s, border-color .2s; }
   .pdf-close:hover { background: var(--maroon); color: var(--cream); border-color: var(--maroon); }
-  .pdf-modal iframe { flex: 1; width: 100%; border: none; background: #525659; }
+  .cv-pages { flex: 1; overflow: auto; background: #525659; padding: 24px; }
+  .cv-pages img {
+    display: block; width: min(100%, 760px); height: auto; margin: 0 auto 22px;
+    background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  }
+  .cv-pages img:last-child { margin-bottom: 0; }
+  @media (max-width: 600px){
+    .pdf-head { align-items: flex-start; }
+    .pdf-head .acts { gap: 8px; }
+    .pdf-open { padding: 7px 10px; }
+    .cv-pages { padding: 12px; }
+  }
 
   /* Skills */
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5px; background: var(--line); border: 1.5px solid var(--line); border-radius: 20px; overflow: hidden; margin-top: 36px; }
@@ -289,7 +300,10 @@
         <button class="pdf-close" aria-label="Close" onclick="closeCV()">✕</button>
       </div>
     </div>
-    <iframe id="cvFrame" title="Salma Mazid CV" src="about:blank"></iframe>
+    <div class="cv-pages" aria-label="Salma Mazid CV">
+      <img src="assets/cv/salma-mazid-cv-1.jpg" alt="Salma Mazid CV page 1" loading="lazy" />
+      <img src="assets/cv/salma-mazid-cv-2.jpg" alt="Salma Mazid CV page 2" loading="lazy" />
+    </div>
   </div>
 </div>
 
@@ -549,9 +563,7 @@
 
   // CV modal
   const cvOverlay = document.getElementById('cvOverlay');
-  const cvFrame = document.getElementById('cvFrame');
   function openCV(){
-    if (cvFrame.getAttribute('src') !== 'cv.pdf') cvFrame.setAttribute('src','cv.pdf');
     cvOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
