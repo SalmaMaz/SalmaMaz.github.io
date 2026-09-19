@@ -376,6 +376,7 @@
     footer_copy: { en:"© 2026 Salma Mazid — Junior Product Manager", fr:"© 2026 Salma Mazid — Product Manager Junior" },
     footer_built: { en:"Built with care", fr:"Conçu avec soin" },
     modal_story: { en:"The story", fr:"L'histoire" },
+    modal_research: { en:"Survey results", fr:"Résultats du questionnaire" },
     modal_screens: { en:"Product screens", fr:"Écrans produit" },
     modal_skills: { en:"Skills & technologies", fr:"Compétences & technologies" }
   };
@@ -387,6 +388,10 @@
       tagline:{en:"A secure clinical workspace for therapists to manage patients, sessions, payments, documents and follow-up in one place.", fr:"Un espace clinique sécurisé pour aider les thérapeutes à gérer patients, séances, paiements, documents et suivi au même endroit."},
       details:{en:"TheraPilot grew from my speech-therapy experience in Morocco, where many practitioners still manage patient files, session notes, scheduling, invoices and progress follow-up on paper. After validating the need through user research with 44 respondents, I evolved the project into a production-oriented web app: a Next.js and Supabase platform with authentication, patient profiles, session history, payment tracking, PDF document management, reporting, and row-level security for clinical data.", fr:"TheraPilot est né de mon expérience en orthophonie au Maroc, où beaucoup de praticiens gèrent encore les dossiers patients, les notes de séance, l'agenda, les factures et le suivi sur papier. Après avoir validé le besoin grâce à une enquête auprès de 44 répondants, j'ai fait évoluer le projet vers une application web orientée production : une plateforme Next.js et Supabase avec authentification, fiches patients, historique des séances, suivi des paiements, gestion de documents PDF, rapports et sécurité des données cliniques via Row Level Security."},
       links:[{t:{en:"UX research survey",fr:"Enquête de recherche UX"},h:"https://docs.google.com/forms/d/e/1FAIpQLScpBZkpC8MEP5S-R81c2nb81adr3IV7oHPffob5Yy4fWajmwQ/viewform"}],
+      researchScreens:[
+        {src:"assets/therapilot/research/optimized/questionnaire-results-paper.jpg", cap:{en:"Survey results showing paper folders remain the dominant patient-file workflow", fr:"Résultats du questionnaire montrant que les dossiers papier restent le mode de gestion dominant"}},
+        {src:"assets/therapilot/research/optimized/questionnaire-results-tools.jpg", cap:{en:"Survey results on spreadsheet use and existing software habits among therapists", fr:"Résultats du questionnaire sur l'usage des tableurs et des logiciels existants chez les thérapeutes"}}
+      ],
       screenshots:[
         {src:"assets/therapilot/optimized/TP_patient_page.jpg", cap:{en:"Patient workspace with documents, session history and clinical follow-up", fr:"Espace patient avec documents, historique des séances et suivi clinique"}},
         {src:"assets/therapilot/optimized/TP_agenda_seances.jpg", cap:{en:"Agenda and sessions view for day-to-day planning", fr:"Vue agenda et séances pour organiser le quotidien"}},
@@ -503,6 +508,16 @@
     const p = projects[idx];
     const links = p.links.map(l => `<a class="pill ${l.sec?'outline small':'solid small'}" href="${l.h}" target="_blank" rel="noopener">${esc(l.t[curLang])} ↗</a>`).join('');
     const skills = p.skills.map(s=>`<span>${esc(s)}</span>`).join('');
+    const researchGallery = p.researchScreens ? `
+      <div class="m-label">${esc(I18N.modal_research[curLang])}</div>
+      <div class="m-gallery">
+        ${p.researchScreens.map(s => `
+          <figure class="m-shot">
+            <img src="${esc(s.src)}" alt="${esc(s.cap[curLang])}" loading="lazy" />
+            <figcaption>${esc(s.cap[curLang])}</figcaption>
+          </figure>
+        `).join('')}
+      </div>` : '';
     const gallery = p.screenshots ? `
       <div class="m-label">${esc(I18N.modal_screens[curLang])}</div>
       <div class="m-gallery">
@@ -521,6 +536,7 @@
       <div class="m-label">${esc(I18N.modal_story[curLang])}</div>
       <p class="m-details">${esc(p.details[curLang])}</p>
       <div class="m-links">${links}</div>
+      ${researchGallery}
       ${gallery}
       <div class="m-label">${esc(I18N.modal_skills[curLang])}</div>
       <div class="m-skills">${skills}</div>`;
