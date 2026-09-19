@@ -161,6 +161,11 @@
   .modal .m-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
   .modal .m-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
   .modal .m-skills span { font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); }
+  .m-gallery { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+  .m-shot { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; }
+  .m-shot img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: top left; }
+  .m-shot figcaption { padding: 10px 12px 12px; font-size: 0.88rem; font-weight: 600; color: var(--ink-70); }
+  @media (max-width: 720px){ .m-gallery { grid-template-columns: 1fr; } }
   @media (max-width: 600px){ .modal { padding: 36px 26px; } }
 
   /* CV / PDF modal */
@@ -371,17 +376,27 @@
     footer_copy: { en:"© 2026 Salma Mazid — Junior Product Manager", fr:"© 2026 Salma Mazid — Product Manager Junior" },
     footer_built: { en:"Built with care", fr:"Conçu avec soin" },
     modal_story: { en:"The story", fr:"L'histoire" },
+    modal_screens: { en:"Product screens", fr:"Écrans produit" },
     modal_skills: { en:"Skills & technologies", fr:"Compétences & technologies" }
   };
 
   const projects = [
     { cat:"medtech",
       tag:{en:"Medtech",fr:"Medtech"},
-      title:"Patient management web app for therapists",
-      tagline:{en:"A modern, secure, all-in-one patient management platform designed for Moroccan rehabilitation professionals.", fr:"Une plateforme de gestion de patients moderne, sécurisée et tout-en-un, conçue pour les professionnels de la rééducation au Maroc."},
-      details:{en:"Inspired by my direct experience as a Speech-Language Pathologist in Morocco, where 80% of therapists still rely on paper for patient files, session notes, scheduling, invoices, and treatment follow-up. I conducted a survey with 44 respondents to validate the need, confirming a strong demand for a simple, unified, and professional tool adapted to the Moroccan context. Tech stack: React, PHP, MySQL.", fr:"Inspirée par mon expérience directe en tant qu'orthophoniste au Maroc, où 80 % des thérapeutes s'appuient encore sur le papier pour les dossiers patients, les notes de séance, la planification, la facturation et le suivi des traitements. J'ai mené une enquête auprès de 44 répondants pour valider le besoin, confirmant une forte demande pour un outil simple, unifié et professionnel adapté au contexte marocain. Stack technique : React, PHP, MySQL."},
-      links:[{t:{en:"UX research survey",fr:"Enquête de recherche UX"},h:"https://docs.google.com/forms/d/e/1FAIpQLScpBZkpC8MEP5S-R81c2nb81adr3IV7oHPffob5Yy4fWajmwQ/viewform"},{t:{en:"Screenshot 1",fr:"Capture 1"},h:"https://mazidsalma.lovable.app/projects/reeducare-agenda.png",sec:true},{t:{en:"Screenshot 2",fr:"Capture 2"},h:"https://mazidsalma.lovable.app/projects/reeducare-new-patient.png",sec:true}],
-      skills:["Apache server","HTML CSS","COPILOT","prompt engineering","Python","UX research","project management","prototyping"] },
+      title:"TheraPilot — patient management platform",
+      tagline:{en:"A secure clinical workspace for therapists to manage patients, sessions, payments, documents and follow-up in one place.", fr:"Un espace clinique sécurisé pour aider les thérapeutes à gérer patients, séances, paiements, documents et suivi au même endroit."},
+      details:{en:"TheraPilot grew from my speech-therapy experience in Morocco, where many practitioners still manage patient files, session notes, scheduling, invoices and progress follow-up on paper. After validating the need through user research with 44 respondents, I evolved the project into a production-oriented web app: a Next.js and Supabase platform with authentication, patient profiles, session history, payment tracking, PDF document management, reporting, and row-level security for clinical data.", fr:"TheraPilot est né de mon expérience en orthophonie au Maroc, où beaucoup de praticiens gèrent encore les dossiers patients, les notes de séance, l'agenda, les factures et le suivi sur papier. Après avoir validé le besoin grâce à une enquête auprès de 44 répondants, j'ai fait évoluer le projet vers une application web orientée production : une plateforme Next.js et Supabase avec authentification, fiches patients, historique des séances, suivi des paiements, gestion de documents PDF, rapports et sécurité des données cliniques via Row Level Security."},
+      links:[{t:{en:"UX research survey",fr:"Enquête de recherche UX"},h:"https://docs.google.com/forms/d/e/1FAIpQLScpBZkpC8MEP5S-R81c2nb81adr3IV7oHPffob5Yy4fWajmwQ/viewform"}],
+      screenshots:[
+        {src:"assets/therapilot/optimized/TP_patient_page.jpg", cap:{en:"Patient workspace with documents, session history and clinical follow-up", fr:"Espace patient avec documents, historique des séances et suivi clinique"}},
+        {src:"assets/therapilot/optimized/TP_agenda_seances.jpg", cap:{en:"Agenda and sessions view for day-to-day planning", fr:"Vue agenda et séances pour organiser le quotidien"}},
+        {src:"assets/therapilot/optimized/TP_documents.jpg", cap:{en:"Document library for patient files and administrative records", fr:"Bibliothèque de documents pour dossiers patients et pièces administratives"}},
+        {src:"assets/therapilot/optimized/TP_documents_preview.jpg", cap:{en:"Secure document preview and PDF workflow", fr:"Prévisualisation sécurisée des documents et workflow PDF"}},
+        {src:"assets/therapilot/optimized/TP_global_report.jpg", cap:{en:"Reports and progress overview for clinical decision-making", fr:"Rapports et vue d'ensemble pour le suivi thérapeutique"}},
+        {src:"assets/therapilot/optimized/TP_financial.jpg", cap:{en:"Payment tracking and financial visibility", fr:"Suivi des paiements et visibilité financière"}},
+        {src:"assets/therapilot/optimized/TP_documents_nouveau.jpg", cap:{en:"Document upload flow designed for fast administrative work", fr:"Ajout de documents pensé pour simplifier l'administratif"}}
+      ],
+      skills:["Next.js","TypeScript","Supabase","PostgreSQL","Row Level Security","UX research","product management","prototyping","clinical workflows","AI-assisted building"] },
     { cat:"edtech",
       tag:{en:"Edtech",fr:"Edtech"},
       title:"Virtual book club app",
@@ -488,6 +503,16 @@
     const p = projects[idx];
     const links = p.links.map(l => `<a class="pill ${l.sec?'outline small':'solid small'}" href="${l.h}" target="_blank" rel="noopener">${esc(l.t[curLang])} ↗</a>`).join('');
     const skills = p.skills.map(s=>`<span>${esc(s)}</span>`).join('');
+    const gallery = p.screenshots ? `
+      <div class="m-label">${esc(I18N.modal_screens[curLang])}</div>
+      <div class="m-gallery">
+        ${p.screenshots.map(s => `
+          <figure class="m-shot">
+            <img src="${esc(s.src)}" alt="${esc(s.cap[curLang])}" loading="lazy" />
+            <figcaption>${esc(s.cap[curLang])}</figcaption>
+          </figure>
+        `).join('')}
+      </div>` : '';
     box.innerHTML = `
       <button class="close" aria-label="Close" onclick="closeModal()">✕</button>
       <span class="m-cat">${esc(p.tag[curLang])}</span>
@@ -496,6 +521,7 @@
       <div class="m-label">${esc(I18N.modal_story[curLang])}</div>
       <p class="m-details">${esc(p.details[curLang])}</p>
       <div class="m-links">${links}</div>
+      ${gallery}
       <div class="m-label">${esc(I18N.modal_skills[curLang])}</div>
       <div class="m-skills">${skills}</div>`;
     overlay.classList.add('open');
